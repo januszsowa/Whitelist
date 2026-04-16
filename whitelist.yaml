@@ -1,0 +1,357 @@
+schema_version: 3
+description: >
+  Balanced whitelist of folders likely to contain user-owned or user-generated
+  data in forensic images across Windows, Linux, macOS, iOS, and Android.
+
+classification:
+  user_files: >
+    Direct file-bearing locations likely to hold user-visible documents, media,
+    exports, downloads, attachments, and synced files.
+  app_data: >
+    Application and profile locations likely to hold user-created databases,
+    mail stores, browser profiles, preferences, logs, backups, and other
+    structured artifacts.
+
+matching:
+  normalize_separators: true
+  expand_user_home_tokens: true
+  support_globs: true
+  strip_mount_prefixes: true
+  resolve_common_path_aliases: true
+  case_handling:
+    windows: insensitive
+    macos: filesystem-dependent
+    linux: sensitive
+    ios: sensitive
+    android: sensitive
+
+platforms:
+  windows:
+    user_files:
+      core:
+        - pattern: 'C:/Users/*/Desktop'
+        - pattern: 'C:/Users/*/Documents'
+        - pattern: 'C:/Users/*/Downloads'
+        - pattern: 'C:/Users/*/Pictures'
+        - pattern: 'C:/Users/*/Music'
+        - pattern: 'C:/Users/*/Videos'
+        - pattern: 'C:/Users/*/Favorites'
+        - pattern: 'C:/Users/*/Contacts'
+        - pattern: 'C:/Users/*/Links'
+        - pattern: 'C:/Users/*/Saved Games'
+        - pattern: 'C:/Users/*/Searches'
+        - pattern: 'C:/Users/Public/Desktop'
+        - pattern: 'C:/Users/Public/Documents'
+        - pattern: 'C:/Users/Public/Downloads'
+        - pattern: 'C:/Users/Public/Pictures'
+        - pattern: 'C:/Users/Public/Music'
+        - pattern: 'C:/Users/Public/Videos'
+        - pattern: 'C:/Users/*/OneDrive*'
+        - pattern: 'C:/Documents and Settings/*/Desktop'
+        - pattern: 'C:/Documents and Settings/*/My Documents'
+        - pattern: 'C:/Documents and Settings/*/My Pictures'
+        - pattern: 'C:/Documents and Settings/*/My Music'
+        - pattern: 'C:/Documents and Settings/*/My Videos'
+      secondary: []
+    app_data:
+      core:
+        - pattern: 'C:/Users/*/AppData/Roaming/Microsoft/Windows/Recent'
+        - pattern: 'C:/Users/*/AppData/Roaming/Microsoft/Signatures'
+        - pattern: 'C:/Users/*/AppData/Roaming/Microsoft/Outlook'
+        - pattern: 'C:/Users/*/AppData/Local/Microsoft/Outlook'
+        - pattern: 'C:/Users/*/Documents/Outlook Files'
+        - pattern: 'C:/Users/*/AppData/Local/Google/Chrome/User Data'
+        - pattern: 'C:/Users/*/AppData/Local/Microsoft/Edge/User Data'
+        - pattern: 'C:/Users/*/AppData/Roaming/Mozilla/Firefox/Profiles'
+        - pattern: 'C:/Users/*/AppData/Roaming/Apple Computer/MobileSync/Backup'
+        - pattern: 'C:/ProgramData/Apple/Lockdown'
+        - pattern: 'C:/Documents and Settings/All Users/Application Data/Apple/Lockdown'
+      secondary:
+        - pattern: 'C:/Users/*/AppData/Roaming'
+        - pattern: 'C:/Users/*/AppData/Local'
+        - pattern: 'C:/Users/*/AppData/LocalLow'
+        - pattern: 'C:/Users/*/AppData/Local/Packages/*/LocalState'
+        - pattern: 'C:/Users/*/AppData/Local/Packages/*/RoamingState'
+        - pattern: 'C:/Users/*/AppData/Local/Packages/*/LocalCache'
+        - pattern: 'C:/Documents and Settings/*/Application Data'
+        - pattern: 'C:/Documents and Settings/*/Local Settings/Application Data'
+
+  linux:
+    user_files:
+      core:
+        - pattern: '/home/*/Desktop'
+        - pattern: '/home/*/Documents'
+        - pattern: '/home/*/Downloads'
+        - pattern: '/home/*/Pictures'
+        - pattern: '/home/*/Music'
+        - pattern: '/home/*/Videos'
+        - pattern: '/home/*/Public'
+        - pattern: '/home/*/Templates'
+        - pattern: '/root/Desktop'
+        - pattern: '/root/Documents'
+        - pattern: '/root/Downloads'
+        - pattern: '/root/Pictures'
+        - pattern: '/root/Music'
+        - pattern: '/root/Videos'
+      secondary: []
+    app_data:
+      core:
+        - pattern: '/home/*/.config'
+        - pattern: '/home/*/.local/share'
+        - pattern: '/home/*/.mozilla'
+        - pattern: '/home/*/.thunderbird'
+        - pattern: '/home/*/.ssh'
+        - pattern: '/home/*/.gnupg'
+        - pattern: '/home/*/.pki'
+        - pattern: '/home/*/.password-store'
+        - pattern: '/root/.config'
+        - pattern: '/root/.local/share'
+        - pattern: '/root/.ssh'
+        - pattern: '/root/.gnupg'
+        - pattern: '/var/mail'
+        - pattern: '/var/spool/mail'
+      secondary:
+        - pattern: '/home/*/.local/state'
+        - pattern: '/home/*/.cache'
+        - pattern: '/home/*/.var/app'
+        - pattern: '/root/.local/state'
+
+  macos:
+    user_files:
+      core:
+        - pattern: '/Users/*/Desktop'
+        - pattern: '/Users/*/Documents'
+        - pattern: '/Users/*/Downloads'
+        - pattern: '/Users/*/Pictures'
+        - pattern: '/Users/*/Music'
+        - pattern: '/Users/*/Movies'
+        - pattern: '/Users/*/Public'
+        - pattern: '/Users/*/Sites'
+        - pattern: '/Users/Shared'
+      secondary:
+        - pattern: '/Users/*/Library/Mobile Documents'
+        - pattern: '/Users/*/Library/CloudStorage'
+    app_data:
+      core:
+        - pattern: '/Users/*/Library/Mail'
+        - pattern: '/Users/*/Library/Messages'
+        - pattern: '/Users/*/Library/Safari'
+        - pattern: '/Users/*/Library/Calendars'
+        - pattern: '/Users/*/Library/Notes'
+        - pattern: '/Users/*/Library/Photos'
+        - pattern: '/Users/*/Library/Preferences'
+        - pattern: '/Users/*/Library/Application Support/AddressBook'
+        - pattern: '/Users/*/Library/Application Support/CallHistoryDB'
+        - pattern: '/Users/*/Library/Application Support/com.apple.MobileSync/Backup'
+      secondary:
+        - pattern: '/var/db/lockdown'
+        - pattern: '/Users/*/Library/Application Support'
+        - pattern: '/Users/*/Library/Accounts'
+        - pattern: '/Users/*/Library/Containers'
+        - pattern: '/Users/*/Library/Group Containers'
+        - pattern: '/Users/*/Library/Autosave Information'
+
+  ios:
+    user_files:
+      core:
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Documents'
+        - pattern: '/private/var/mobile/Media/DCIM'
+        - pattern: '/private/var/mobile/Media/PhotoData'
+        - pattern: '/private/var/mobile/Media/PhotoStreamsData'
+        - pattern: '/private/var/mobile/Media/Recordings'
+        - pattern: '/private/var/mobile/Media/Downloads'
+        - pattern: '/private/var/mobile/Media/Books'
+        - pattern: '/private/var/mobile/Media/iTunes_Control'
+      secondary:
+        - pattern: '/private/var/mobile/Applications/*/Documents'
+    app_data:
+      core:
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Library/Application Support'
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Library/Preferences'
+        - pattern: '/private/var/mobile/Containers/Shared/AppGroup/*'
+        - pattern: '/private/var/mobile/Library/SMS'
+        - pattern: '/private/var/mobile/Library/AddressBook'
+        - pattern: '/private/var/mobile/Library/CallHistoryDB'
+        - pattern: '/private/var/mobile/Library/Voicemail'
+        - pattern: '/private/var/mobile/Library/Mail'
+        - pattern: '/private/var/mobile/Library/Safari'
+        - pattern: '/private/var/mobile/Library/Notes'
+        - pattern: '/private/var/mobile/Library/Calendars'
+        - pattern: '/private/var/mobile/Library/Accounts'
+        - pattern: '/private/var/mobile/Library/Preferences'
+        - pattern: '/private/var/mobile/Library/CoreDuet/Knowledge'
+        - pattern: '/private/var/mobile/Library/Biome'
+        - pattern: '/private/var/wireless/Library/CallHistory'
+        - pattern: '/private/var/wireless/Library/CallHistoryDB'
+      secondary:
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Library'
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Library/Caches'
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/tmp'
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Library/Cookies'
+        - pattern: '/private/var/mobile/Containers/Data/Application/*/Library/WebKit'
+        - pattern: '/private/var/mobile/Applications/*/Library'
+        - pattern: '/private/var/mobile/Applications/*/Library/Application Support'
+        - pattern: '/private/var/mobile/Applications/*/Library/Preferences'
+        - pattern: '/private/var/root/Library/Caches/locationd'
+
+  android:
+    user_files:
+      core:
+        - pattern: '/DCIM'
+        - pattern: '/Pictures'
+        - pattern: '/Movies'
+        - pattern: '/Music'
+        - pattern: '/Download'
+        - pattern: '/Downloads'
+        - pattern: '/Documents'
+        - pattern: '/Podcasts'
+        - pattern: '/Audiobooks'
+        - pattern: '/Recordings'
+        - pattern: '/Ringtones'
+        - pattern: '/Alarms'
+        - pattern: '/Notifications'
+        - pattern: '/Android/media/*'
+        - pattern: '/storage/emulated/*/DCIM'
+        - pattern: '/storage/emulated/*/Pictures'
+        - pattern: '/storage/emulated/*/Pictures/Screenshots'
+        - pattern: '/storage/emulated/*/Movies'
+        - pattern: '/storage/emulated/*/Music'
+        - pattern: '/storage/emulated/*/Download'
+        - pattern: '/storage/emulated/*/Downloads'
+        - pattern: '/storage/emulated/*/Documents'
+        - pattern: '/storage/emulated/*/Podcasts'
+        - pattern: '/storage/emulated/*/Audiobooks'
+        - pattern: '/storage/emulated/*/Recordings'
+        - pattern: '/storage/emulated/*/Ringtones'
+        - pattern: '/storage/emulated/*/Alarms'
+        - pattern: '/storage/emulated/*/Notifications'
+        - pattern: '/storage/emulated/*/Android/media/*'
+        - pattern: '/sdcard/DCIM'
+        - pattern: '/sdcard/Pictures'
+        - pattern: '/sdcard/Movies'
+        - pattern: '/sdcard/Music'
+        - pattern: '/sdcard/Download'
+        - pattern: '/sdcard/Documents'
+        - pattern: '/sdcard/Android/media/*'
+        - pattern: '/storage/*/DCIM'
+        - pattern: '/storage/*/Pictures'
+        - pattern: '/storage/*/Movies'
+        - pattern: '/storage/*/Music'
+        - pattern: '/storage/*/Download'
+        - pattern: '/storage/*/Documents'
+        - pattern: '/storage/*/Android/media/*'
+      secondary:
+        - pattern: '/Android/data/*/files'
+        - pattern: '/storage/emulated/*/Android/data/*/files'
+        - pattern: '/sdcard/Android/data/*/files'
+        - pattern: '/storage/*/Android/data/*/files'
+        - pattern: '/data/media/*/DCIM'
+        - pattern: '/data/media/*/Pictures'
+        - pattern: '/data/media/*/Movies'
+        - pattern: '/data/media/*/Music'
+        - pattern: '/data/media/*/Download'
+        - pattern: '/data/media/*/Downloads'
+        - pattern: '/data/media/*/Documents'
+        - pattern: '/data/media/*/Podcasts'
+        - pattern: '/data/media/*/Audiobooks'
+        - pattern: '/data/media/*/Recordings'
+        - pattern: '/data/media/*/Ringtones'
+        - pattern: '/data/media/*/Alarms'
+        - pattern: '/data/media/*/Notifications'
+        - pattern: '/data/media/*/Android/media/*'
+        - pattern: '/data/media/*/Android/data/*/files'
+    app_data:
+      core:
+        - pattern: '/data/user/*/*/databases'
+        - pattern: '/data/user/*/*/shared_prefs'
+        - pattern: '/data/user_de/*/*/databases'
+        - pattern: '/data/user_de/*/*/shared_prefs'
+        - pattern: '/data/data/*/databases'
+        - pattern: '/data/data/*/shared_prefs'
+      secondary:
+        - pattern: '/data/user/*/*/files'
+        - pattern: '/data/user/*/*/no_backup'
+        - pattern: '/data/user/*/*/app_webview'
+        - pattern: '/data/user_de/*/*/files'
+        - pattern: '/data/data/*/files'
+        - pattern: '/data/data/*/no_backup'
+
+exclusions:
+  windows:
+    - 'C:/Windows'
+    - 'C:/Program Files'
+    - 'C:/Program Files (x86)'
+    - 'C:/ProgramData'
+  linux:
+    - '/bin'
+    - '/boot'
+    - '/dev'
+    - '/etc'
+    - '/lib'
+    - '/lib64'
+    - '/proc'
+    - '/run'
+    - '/sbin'
+    - '/snap'
+    - '/sys'
+    - '/usr'
+    - '/var/cache'
+    - '/var/log'
+  macos:
+    - '/Applications'
+    - '/System'
+    - '/Library'
+  ios:
+    - '/Applications'
+    - '/System'
+    - '/private/var/containers/Bundle/Application'
+  android:
+    - '/apex'
+    - '/data/app'
+    - '/metadata'
+    - '/odm'
+    - '/product'
+    - '/system'
+    - '/vendor'
+    - '/sdcard/Android/obb'
+    - '/storage/*/Android/obb'
+    - '/storage/emulated/*/Android/obb'
+
+references:
+  windows:
+    official:
+      - 'https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid'
+      - 'https://learn.microsoft.com/en-us/windows/apps/design/app-settings/store-and-retrieve-app-data'
+    forensic:
+      - 'https://www.sans.org/white-papers/40190'
+      - 'https://www.sans.org/white-papers/34545'
+  linux:
+    official:
+      - 'https://specifications.freedesktop.org/basedir-spec/0.8/'
+      - 'https://www.freedesktop.org/wiki/Software/xdg-user-dirs/'
+    forensic:
+      - 'https://www.sans.org/white-papers/38235'
+  macos:
+    official:
+      - 'https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html'
+      - 'https://developer.apple.com/documentation/security/app-sandbox'
+    forensic:
+      - 'https://www.sans.org/white-papers/40280'
+      - 'https://www.cyberengage.org/post/analyzing-safari-browser-apple-mail-data-and-recents-database-artifacts-on-macos'
+  ios:
+    official:
+      - 'https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html'
+      - 'https://developer.apple.com/documentation/foundation/url/documentsdirectory'
+    forensic:
+      - 'https://www.sans.org/white-papers/34092'
+      - 'https://www.magnetforensics.com/blog/the-meaning-of-messages/'
+      - 'https://www.magnetforensics.com/blog/bringing-it-back-with-biome-data'
+  android:
+    official:
+      - 'https://developer.android.com/training/data-storage/app-specific'
+      - 'https://developer.android.com/reference/android/os/Environment'
+      - 'https://developer.android.com/training/articles/direct-boot'
+    forensic:
+      - 'https://www.magnetforensics.com/white-papers/android-nougat-forensic-analysis/'
+      - 'https://www.magnetforensics.com/resources/download-white-paper-android-acquisition-methods/'
+      - 'https://www.magnetforensics.com/resources/white-paper-demystifying-android-marshmallow-forensic-analysis/'
